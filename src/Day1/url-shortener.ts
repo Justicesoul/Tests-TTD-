@@ -2,7 +2,8 @@
 
 interface UrlEntry {
   longUrl: string,
-  shortUrl: string
+  shortUrl: string,
+  visits: number,
 }
 
 export class UrlShortener {
@@ -11,7 +12,7 @@ export class UrlShortener {
 
   shorten(longUrl: string): string {
     const shortUrl = "https://short.url/" + this.counter++;
-    this.entries.push({ longUrl, shortUrl })
+    this.entries.push({ longUrl, shortUrl, visits: 0 })
     return shortUrl
   }
 
@@ -20,22 +21,18 @@ export class UrlShortener {
     if (!entry) {
       return
     } else {
+      entry.visits++
       return entry.longUrl
     }
   }
-}
 
-//account-statement
-export class Account {
-  depo: number = 0
-  deposit(amount: number): void {
-    this.depo += amount
-  }
-  withdraw(amount: number): void {
-    this.depo -= amount
-  }
-  getDepo() {
-    return this.depo
+  visits(shortUrl: string): number {
+    const entry = this.entries.find(e => e.shortUrl === shortUrl)
+    if (!entry) {
+      return 0
+    }
+    return entry.visits
+
   }
 }
 

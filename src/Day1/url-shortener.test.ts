@@ -1,4 +1,4 @@
-import { UrlShortener, Account } from "./index";
+import { UrlShortener } from "./url-shortener";
 
 //url-shortener
 describe("URL Shortener", () => {
@@ -28,33 +28,26 @@ describe("URL Shortener", () => {
     const longUrl2 = "https://www.codelex.io/ievadnodarbibas";
     const shortUrl2 = urlShortener.shorten(longUrl2);
 
-    const translatedLongUrl = urlShortener.translate(shortUrl)
-
     expect(urlShortener.translate(shortUrl)).toEqual(longUrl)
     expect(urlShortener.translate(shortUrl2)).toEqual(longUrl2)
   });
-});
 
-//account-statement
-describe("Account Statement", () => {
-  //   it("should add deposit value", () => {
-  //     const acc: any = new Account()
-  //     acc.deposit(500)
-  //     expect(acc.getDepo()).toEqual(500)
-  // });
-  it('should be able to deposit & withdraw', () => {
-    const acc: any = new Account()
-    acc.deposit(500)
-    acc.withdraw(300)
-    expect(acc.getDepo()).toEqual(200)
-  })
-  it('should be able to print statements', () => {
-    const acc: any = new Account()
-    acc.deposit(500)
-    acc.withdraw(300)
-    expect(acc.getDepo()).toEqual(200)
-  })
+  it("should track number of times visited", () => {
+    const urlShortener = new UrlShortener()
+    const longUrl = "https://www.codelex.io/kontakti";
+    const shortUrl = urlShortener.shorten(longUrl);
 
+    expect(urlShortener.visits(shortUrl)).toBe(0)
 
+    urlShortener.translate(shortUrl)
+
+    expect(urlShortener.visits(shortUrl)).toBe(1)
+
+    urlShortener.translate(shortUrl)
+    urlShortener.translate(shortUrl)
+    urlShortener.translate(shortUrl)
+
+    expect(urlShortener.visits(shortUrl)).toBe(4)
+  });
 });
 
